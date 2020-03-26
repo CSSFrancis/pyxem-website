@@ -2,7 +2,7 @@ Non Crystalline Materials
 ===========================
 
 This section is designed to explain the workflow for analyzing a non-crystalline dataset.  Primarily we can
-seperate things into three different methods.
+separate things into three different methods.
 
 * `Fluctuation Electron Microscopy (FEM)`_
 * `Angular Correlations and Angular Power Spectrum`_
@@ -10,23 +10,34 @@ seperate things into three different methods.
 
 .. _`Fluctuation Electron Microscopy (FEM)`:
 
-**Fluction Electron Microscopy(FEM):**
+**Fluctuation Electron Microscopy(FEM):**
 
-Insert information about FEM `[1]`_
+FEM characterize the atomic structure in disordered materials by measuring the statistical fluctuation in scattered electron intensity `[1]`_. The normalized variance :math:`V(k)` containing three- and four-body correlation functions, which could be used to interpret medium range order, is defined as
+
+.. math::
+    
+    V(k)=\frac{\left<I^2(k,r)\right>_r}{\left<I(k,r)\right>^2_r},
+
+where :math:`k` is the length of the reciprocal space vector and :math:`r` is the probe position of a frame. Values within :math:`\left<...\right>` are averaged over probe position :math:`r` (i.e. averaged over all frames).
+
+There are two different manner to calculate :math:`V(k)` from a 4D dataset: inter-frame and intra-frame. Inter-frame variance takes the variance at each k (or each k space position) over all electron diffraction frames. Intra-frame variance takes the variance over the angular ring at each k and average over all frames. There is no evidence suggests any differences in the mathematical encodings of the structural information between these two. See `[1]`_ for more information.
+
+*Calculating* :math:`V(k)`
+
+
 
 
 
 .. _`Angular Correlations and Angular Power Spectrum`:
 
-The Anuglar Correlation as described in `[2]`_ can be shown as the function below.
+Angular Correlation gives information about the symmetries of the local atomic structures in the sample`[2]`_. Angular correlation function is shown below.
 
 .. math::
 
-   C(\phi,k,n)= \frac{ <I(\theta,k,n)*I(\theta+\phi,k,n)>_\theta-<I(\theta,k,n)>^2}{<I(\theta,k,n)>^2}
+   C(\phi,k,r)= \frac{\left<I(\theta,k,r)*I(\theta+\phi,k,r)\right>_\theta-\left<I(\theta,k,r)\right>^2}{\left<I(\theta,k,r)\right>^2}
 
-Where :math:`\theta` is the entire :math:`2\pi` radians the that :math:`\phi` (the angle of correlation) is averaged
-over. k is the radius of the reciporical space vector and n is the diffraction pattern number (assuming the correlation
-is being calculated for a series of diffraction patterns)
+Where :math:`\theta` is the entire :math:`2\pi` radians that :math:`\phi` (the angular lag) is averaged
+over. :math:`k` is the length of the reciprocal space vector and :math:`r` is the probe position of the frame. The symmetry present at every probe position :math:`r` is accessed by taking the Fourier series of the angular correlation function at each :math:`k`. This gives the angular power spectrum :math:`P(n,k,r)=FT(C(\phi,k,r))`, where :math:`n` is the order of symmetry. For each order, angular power spectrum can be mapped spatially to represent the atomic structure symmetry in the sample region.
 
 While the Electron Microscope community has decided to use the terminology of angular correlations, what is being
 calculated is in actuality the self-correlation as a function of angle instead of time.
@@ -63,7 +74,21 @@ In order to calculate angular correlations, start by loading a 4-D data set.
 
 .. _`Electron Correlation Microscopy (ECM)`:
 
-Insert information about ECM `[3]`_
+ECM measures structural dynamics with spatial (and possible reciprocal) resolution`[3]`_. Local structural persistence can be evaluated by the lifetime of the corresponding speckle. This is statistically represented by time autocorrelation function:
+
+.. math::
+    
+    g_2(t,r)=\frac{\left<I({t}',r)I({t}'+t,r)\right>_{{t}'}}{\left<I({t}',r)\right>^2},
+
+where :math:`{t}'` is the time of a frame, :math:`t` is the delay time after :math:`{t}'`, :math:`r` is the probe position of a frame, and :math:`\left<...\right>_{{t}'}` denotes average over :math:`{t}'`. The calculated :math:`g_2(t,r)` is fitted to the Kohlrausch–Williams-Watt (KWW) equation:
+
+.. math::
+    
+    g_2(t)=1+A\exp\left[-2\left(\frac{t}{\tau}\right)^\beta\right]
+
+to give a spatial map of the relaxation time :math:`\tau(r)` and the shape parameter :math:`\beta(r)`.
+
+Note the above analysis is based on the tilted dark field ECM experiment where a 3D data set are acquired time-resolved on a fixed reciprocal space position :math:`q`.
 
 
 
